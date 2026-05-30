@@ -1,0 +1,159 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Zoomed-in district proportional symbol map of Malaysia with a streamlined heat color scale.",
+  "background": "transparent",
+  "config": {
+    "view": {"stroke": null},
+    "font": "Inter, system-ui, sans-serif",
+    "title": {"font": "Inter", "subtitleFont": "Inter", "anchor": "start", "offset": 12},
+    "legend": {
+      "labelFont": "Inter", 
+      "titleFont": "Inter", 
+      "titleFontSize": 11, 
+      "labelFontSize": 10,
+      "layout": {"direction": "horizontal"}
+    }
+  },
+  "title": {
+    "text": "Relative Crime Hotspots Across Malaysian Districts",
+    "subtitle": "Each circle represents a police district. Size and color scale with relative case volume (2016–2023).",
+    "fontSize": 18,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#52525b"
+  },
+  "width": 900,
+  "height": 450,
+  "params": [
+    {
+      "name": "metric",
+      "value": "All crimes",
+      "bind": {
+        "input": "radio",
+        "options": ["All crimes", "Property only", "Assault only"],
+        "name": "Filter Crime Type: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "comment": "Base Map Layer - Zoomed and centered directly on Malaysia coordinates",
+      "data": {
+        "url": "data/geoBoundaries-MYS-ADM1.topojson",
+        "format": {"type": "topojson", "feature": "MYSADM1gbOpen"}
+      },
+      "projection": {
+        "type": "mercator",
+        "scale": 2600,
+        "center": [109.5, 4.2]
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f1f5f9",
+        "stroke": "#cbd5e1",
+        "strokeWidth": 0.8
+      }
+    },
+    {
+      "comment": "Proportional Bubble Layer",
+      "data": {"url": "data/district_totals.csv"},
+      "transform": [
+        {
+          "calculate": "metric === 'Property only' ? datum.total_property : metric === 'Assault only' ? datum.total_assault : datum.total_crimes",
+          "as": "raw_value"
+        },
+        {"filter": "datum.raw_value > 0"},
+        {
+          "calculate": "sqrt(datum.raw_value)",
+          "as": "relative_intensity"
+        }
+      ],
+      "projection": {
+        "type": "mercator",
+        "scale": 2600,
+        "center": [109.5, 4.2]
+      },
+      "mark": {
+        "type": "circle",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2,
+        "opacity": 0.5,
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "size": {
+          "field": "relative_intensity",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "range": [25, 600]
+          },
+          "legend": {
+            "title": "Relative Volume (Scale)",
+            "values": [10, 50, 100, 150],
+            "orient": "bottom",
+            "offset": 15,
+            "legendX": 20
+          }
+        },
+        "color": {
+          "field": "raw_value",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "reds",
+            "type": "sqrt"
+          },
+          "legend": {
+            "title": "Total Cases (Absolute)",
+            "format": "~s",
+            "orient": "bottom",
+            "offset": 15,
+            "gradientLength": 180
+          }
+        },
+        "order": {"field": "raw_value", "type": "quantitative", "sort": "descending"},
+        "tooltip": [
+          {"field": "district", "type": "nominal", "title": "District"},
+          {"field": "state", "type": "nominal", "title": "State"},
+          {"field": "total_crimes", "type": "quantitative", "title": "Total Crimes", "format": ","},
+          {"field": "total_property", "type": "quantitative", "title": "Property Crimes", "format": ","},
+          {"field": "total_assault", "type": "quantitative", "title": "Assault Cases", "format": ","}
+        ]
+      }
+    },
+    {
+      "comment": "Smart Labeling for Top Districts",
+      "data": {"url": "data/district_totals.csv"},
+      "transform": [
+        {"calculate": "metric === 'Property only' ? datum.total_property : metric === 'Assault only' ? datum.total_assault : datum.total_crimes", "as": "value"},
+        {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "value", "order": "descending"}]},
+        {"filter": "datum.rank <= 3"}
+      ],
+      "projection": {
+        "type": "mercator",
+        "scale": 2600,
+        "center": [109.5, 4.2]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 14,
+        "dy": -2,
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#0f172a",
+        "stroke": "#ffffff",
+        "strokeWidth": 4,
+        "strokeJoin": "round",
+        "paintOrder": "stroke"
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "district", "type": "nominal"}
+      }
+    }
+  ]
+}

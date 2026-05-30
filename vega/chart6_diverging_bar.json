@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Diverging horizontal bar chart. Each state deviation from 14-state mean annual crimes.",
+  "background": "transparent",
+  "config": {
+    "view": {"stroke": null},
+    "font": "Inter",
+    "axis": {
+      "labelFont": "Inter", "titleFont": "Inter",
+      "labelColor": "#52525b", "titleColor": "#3f3f46",
+      "domainColor": "#d4d4d8", "tickColor": "#d4d4d8",
+      "gridColor": "rgba(128,128,128,0.12)"
+    }
+  },
+  "title": {
+    "text": "How far above or below the national mean?",
+    "subtitle": "Each bar = state annual average minus the 14-state mean. Right of zero = above average crime.",
+    "fontSize": 14, "fontWeight": 600,
+    "subtitleFontSize": 10, "subtitleColor": "#71717a",
+    "anchor": "start", "offset": 8
+  },
+  "width": "container",
+  "height": 380,
+  "data": {"url": "data/state_year_total.csv"},
+  "transform": [
+    {
+      "aggregate": [{"op": "mean", "field": "crimes", "as": "annual_avg"}],
+      "groupby": ["state"]
+    },
+    {
+      "joinaggregate": [{"op": "mean", "field": "annual_avg", "as": "national_mean"}]
+    },
+    {"calculate": "datum.annual_avg - datum.national_mean", "as": "deviation"},
+    {"calculate": "(datum.deviation / datum.national_mean) * 100", "as": "pct_dev"},
+    {"calculate": "datum.deviation >= 0 ? 'above' : 'below'", "as": "direction"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#a1a1aa", "strokeWidth": 0.8, "opacity": 0.6},
+      "encoding": {"x": {"datum": 0}}
+    },
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 3, "height": 18},
+      "encoding": {
+        "y": {
+          "field": "state", "type": "nominal",
+          "sort": {"field": "deviation", "order": "descending"},
+          "axis": {
+            "title": null, "labelFontSize": 11,
+            "labelPadding": 8, "domain": false, "ticks": false
+          }
+        },
+        "x": {
+          "field": "deviation", "type": "quantitative",
+          "axis": {
+            "title": "Deviation from national mean (annual avg cases)",
+            "format": "+~s", "tickCount": 7, "grid": true
+          },
+          "scale": {"nice": false}
+        },
+        "color": {
+          "field": "direction", "type": "nominal",
+          "scale": {
+            "domain": ["above", "below"],
+            "range": ["#e05c3a", "#4a90d9"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "state", "type": "nominal", "title": "State"},
+          {"field": "annual_avg", "type": "quantitative", "title": "Annual avg crimes", "format": ",.0f"},
+          {"field": "national_mean", "type": "quantitative", "title": "National mean", "format": ",.0f"},
+          {"field": "deviation", "type": "quantitative", "title": "Deviation", "format": "+,.0f"},
+          {"field": "pct_dev", "type": "quantitative", "title": "% from mean", "format": "+.1f"}
+        ]
+      }
+    }
+  ]
+}

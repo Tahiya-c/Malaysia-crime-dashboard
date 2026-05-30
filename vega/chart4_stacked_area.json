@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "transparent",
+  "config": {
+    "view": {"stroke": null}, "font": "Inter",
+    "axis": {
+      "labelFont": "Inter", "titleFont": "Inter",
+      "labelColor": "#a1a1aa", "titleColor": "#e4e4e7",
+      "domainColor": "#3a3530", "tickColor": "#3a3530",
+      "gridColor": "rgba(128,128,128,0.12)"
+    }
+  },
+  "width": 440, "height": 300,
+  "data": {"url": "data/national_yearly.csv"},
+  "transform": [
+    {"aggregate": [{"op": "sum", "field": "crimes", "as": "total"}], "groupby": ["year"]},
+    {
+      "sort": [{"field": "year", "order": "ascending"}],
+      "window": [{"op": "lag", "field": "total", "as": "prev"}]
+    },
+    {"calculate": "datum.prev == null ? null : datum.total - datum.prev", "as": "delta"},
+    {"calculate": "datum.prev == null ? null : (datum.total - datum.prev) / datum.prev * 100", "as": "delta_pct"},
+    {"filter": "datum.year > 2016"},
+    {"calculate": "datum.delta_pct >= 0 ? 'increase' : 'decrease'", "as": "direction"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#52525b", "strokeWidth": 0.8, "opacity": 0.7},
+      "encoding": {"y": {"datum": 0}}
+    },
+    {
+      "mark": {"type": "bar", "cornerRadius": 3, "size": 36},
+      "encoding": {
+        "x": {
+          "field": "year", "type": "ordinal",
+          "axis": {"title": null, "labelAngle": 0}
+        },
+        "y": {
+          "field": "delta_pct", "type": "quantitative",
+          "axis": {
+            "title": "% change vs previous year",
+            "format": "+.0f", "tickCount": 6
+          }
+        },
+        "color": {
+          "field": "direction", "type": "nominal",
+          "scale": {"domain": ["decrease", "increase"], "range": ["#4a90d9", "#e05c3a"]},
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "year", "type": "ordinal", "title": "Year"},
+          {"field": "total", "type": "quantitative", "title": "Total crimes", "format": ","},
+          {"field": "delta", "type": "quantitative", "title": "Change", "format": "+,"},
+          {"field": "delta_pct", "type": "quantitative", "title": "% change", "format": "+.1f"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.year == 2023"}],
+      "mark": {
+        "type": "text", "align": "center", "dy": 22,
+        "fontSize": 9, "fontStyle": "italic", "fontWeight": 600, "color": "#e05c3a"
+      },
+      "encoding": {
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"datum": 0},
+        "text": {"value": "↑ first uptick"}
+      }
+    }
+  ]
+}

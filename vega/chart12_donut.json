@@ -1,0 +1,190 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Donut \u2014 7 crime groups. Wong colourblind palette. % labels on slices. Centre total in theme-adaptive colour.",
+  "background": "transparent",
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Inter",
+    "legend": {
+      "labelFont": "Inter",
+      "titleFont": "Inter",
+      "labelFontSize": 11,
+      "titleFontSize": 11,
+      "labelColor": "#52525b",
+      "symbolType": "square",
+      "symbolSize": 120
+    }
+  },
+  "width": 480,
+  "height": 360,
+  "data": {
+    "url": "data/crime_type_grouped.csv"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 88,
+        "outerRadius": 148,
+        "stroke": "white",
+        "strokeWidth": 2,
+        "cornerRadius": 2
+      },
+      "encoding": {
+        "theta": {
+          "field": "total",
+          "type": "quantitative",
+          "sort": "descending",
+          "stack": true
+        },
+        "order": {
+          "field": "total",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "color": {
+          "field": "label",
+          "type": "nominal",
+          "sort": {
+            "field": "total",
+            "op": "sum",
+            "order": "descending"
+          },
+          "scale": {
+            "domain": [
+              "Motorcycle theft",
+              "Other theft",
+              "Break-in",
+              "Car & lorry theft",
+              "Assault & injury",
+              "Gang robbery",
+              "Solo robbery"
+            ],
+            "range": [
+              "#0072B2",
+              "#E69F00",
+              "#009E73",
+              "#CC79A7",
+              "#D55E00",
+              "#56B4E9",
+              "#882255"
+            ]
+          },
+          "legend": {
+            "title": "Crime categories",
+            "titleFontSize": 11,
+            "titleFontWeight": 600,
+            "orient": "bottom",
+            "offset": 12,
+            "columns": 3,
+            "columnPadding": 16,
+            "rowPadding": 8,
+            "labelLimit": 140,
+            "symbolStrokeWidth": 0,
+            "labelFontSize": 10
+          }
+        },
+        "tooltip": [
+          {
+            "field": "label",
+            "type": "nominal",
+            "title": "Category"
+          },
+          {
+            "field": "total",
+            "type": "quantitative",
+            "title": "Cases",
+            "format": ","
+          },
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "Share %",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "round(datum.pct) + '%'",
+          "as": "pct_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "radius": 120,
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "white"
+      },
+      "encoding": {
+        "theta": {
+          "field": "total",
+          "type": "quantitative",
+          "sort": "descending",
+          "stack": true
+        },
+        "order": {
+          "field": "total",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "text": {
+          "field": "pct_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "t": 1
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "fontSize": 32,
+        "fontWeight": 700,
+        "font": "Fraunces, Georgia, serif",
+        "color": "#1a1714",
+        "dy": 0
+      },
+      "encoding": {
+        "text": {
+          "value": "605K"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "t": 1
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "top",
+        "fontSize": 13,
+        "fontWeight": 400,
+        "color": "#71717a",
+        "dy": 6
+      },
+      "encoding": {
+        "text": {
+          "value": "total cases"
+        }
+      }
+    }
+  ]
+}

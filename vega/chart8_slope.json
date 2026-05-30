@@ -1,0 +1,239 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Slope graph 2016 vs 2023. Linear Y scale. Cividis encodes magnitude of decline. Tooltip per line.",
+  "background": "transparent",
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Inter",
+    "axis": {
+      "labelFont": "Inter",
+      "titleFont": "Inter",
+      "labelColor": "#52525b",
+      "titleColor": "#3f3f46",
+      "domainColor": "#d4d4d8",
+      "tickColor": "#d4d4d8",
+      "gridColor": "rgba(0,0,0,0.05)"
+    }
+  },
+  "title": {
+    "text": "Every state recorded fewer crimes in 2023 than 2016",
+    "subtitle": "Darker = steeper percentage decline. Hover a line for the numbers.",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "subtitleFontSize": 10,
+    "subtitleColor": "#71717a",
+    "anchor": "start",
+    "offset": 8
+  },
+  "width": 460,
+  "height": 480,
+  "data": {
+    "url": "data/slope_data.csv"
+  },
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "first_value",
+          "field": "crimes",
+          "as": "v_first"
+        },
+        {
+          "op": "last_value",
+          "field": "crimes",
+          "as": "v_last"
+        }
+      ],
+      "groupby": [
+        "state"
+      ],
+      "sort": [
+        {
+          "field": "year",
+          "order": "ascending"
+        }
+      ],
+      "frame": [
+        null,
+        null
+      ]
+    },
+    {
+      "calculate": "(datum.v_last - datum.v_first) / datum.v_first * 100",
+      "as": "delta_pct"
+    },
+    {
+      "calculate": "abs(datum.delta_pct)",
+      "as": "abs_delta"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "interpolate": "linear"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "axis": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": 600,
+            "domain": false,
+            "ticks": false,
+            "orient": "top",
+            "labelPadding": 8
+          }
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative",
+          "axis": {
+            "title": "Total crimes",
+            "format": "~s",
+            "tickCount": 5,
+            "grid": true,
+            "labelFontSize": 9,
+            "labelColor": "#a1a1aa"
+          }
+        },
+        "detail": {
+          "field": "state"
+        },
+        "color": {
+          "field": "abs_delta",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "cividis",
+            "reverse": true
+          },
+          "legend": {
+            "title": "% decline",
+            "format": ".0f",
+            "orient": "bottom",
+            "gradientLength": 160,
+            "labelFontSize": 9,
+            "titleFontSize": 9
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "v_first",
+            "type": "quantitative",
+            "title": "2016",
+            "format": ","
+          },
+          {
+            "field": "v_last",
+            "type": "quantitative",
+            "title": "2023",
+            "format": ","
+          },
+          {
+            "field": "delta_pct",
+            "type": "quantitative",
+            "title": "% change",
+            "format": "+.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 80,
+        "opacity": 0.95,
+        "stroke": "white",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "abs_delta",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "cividis",
+            "reverse": true
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2016"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 10,
+        "fontWeight": 500,
+        "color": "#71717a"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "state",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2023"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#a1a1aa"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "delta_pct",
+          "type": "quantitative",
+          "format": "+.0f"
+        }
+      }
+    }
+  ]
+}

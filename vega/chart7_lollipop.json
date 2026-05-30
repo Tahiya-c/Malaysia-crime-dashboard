@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Top 15 districts by total crime. Lollipop chart. Color encodes total volume (cividis) for consistency.",
+  "background": "transparent",
+  "config": {
+    "view": {"stroke": null}, "font": "Inter",
+    "axis": {
+      "labelFont": "Inter", "titleFont": "Inter",
+      "labelColor": "#52525b", "titleColor": "#71717a",
+      "domainColor": "#d4d4d8", "tickColor": "#d4d4d8",
+      "gridColor": "rgba(0,0,0,0.05)"
+    },
+    "legend": {"labelFont": "Inter", "titleFont": "Inter"}
+  },
+  "title": {
+    "text": "Top 15 districts by total crime",
+    "subtitle": "Most are clustered in Selangor and Johor. 2016 to 2023 totals.",
+    "fontSize": 14, "fontWeight": 600,
+    "subtitleFontSize": 10, "subtitleColor": "#71717a",
+    "anchor": "start", "offset": 8
+  },
+  "width": 480, "height": 420,
+  "data": {"url": "data/district_totals.csv"},
+  "transform": [
+    {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "total_crimes", "order": "descending"}]},
+    {"filter": "datum.rank <= 15"},
+    {"calculate": "datum.district + '  ·  ' + datum.state", "as": "label"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#d4d4d8", "strokeWidth": 1.5},
+      "encoding": {
+        "y": {"field": "label", "type": "nominal",
+              "sort": {"field": "total_crimes", "order": "descending"},
+              "axis": {"title": null, "labelFontSize": 10, "labelLimit": 200, "ticks": false, "domain": false}},
+        "x": {"field": "total_crimes", "type": "quantitative",
+              "axis": {"title": "Total crimes", "format": "~s", "tickCount": 5}},
+        "x2": {"datum": 0}
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true, "size": 140, "stroke": "white", "strokeWidth": 1.5},
+      "encoding": {
+        "y": {"field": "label", "type": "nominal", "sort": {"field": "total_crimes", "order": "descending"}},
+        "x": {"field": "total_crimes", "type": "quantitative"},
+        "color": {"field": "total_crimes", "type": "quantitative",
+                  "scale": {"scheme": "cividis", "reverse": true},
+                  "legend": null},
+        "tooltip": [
+          {"field": "district", "type": "nominal", "title": "District"},
+          {"field": "state", "type": "nominal", "title": "State"},
+          {"field": "total_crimes", "type": "quantitative", "title": "Total", "format": ","},
+          {"field": "total_property", "type": "quantitative", "title": "Property", "format": ","},
+          {"field": "total_assault", "type": "quantitative", "title": "Assault", "format": ","}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 12, "fontSize": 10, "color": "#71717a", "fontWeight": 500},
+      "encoding": {
+        "y": {"field": "label", "type": "nominal", "sort": {"field": "total_crimes", "order": "descending"}},
+        "x": {"field": "total_crimes", "type": "quantitative"},
+        "text": {"field": "total_crimes", "type": "quantitative", "format": ",.0f"}
+      }
+    }
+  ]
+}

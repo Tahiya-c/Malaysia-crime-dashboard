@@ -1,0 +1,141 @@
+state,type,crimes,pct
+Johor,theft_vehicle_motorcycle,22102,33.51
+Johor,theft_other,12818,19.43
+Johor,break_in,9205,13.95
+Johor,theft_vehicle_motorcar,6602,10.01
+Johor,causing_injury,4010,6.08
+Johor,theft_vehicle_lorry,1525,2.31
+Johor,rape,1512,2.29
+Johor,murder,332,0.5
+Johor,gang_robbery,5214,7.9
+Johor,solo_robbery,2643,4.01
+Kedah,theft_vehicle_motorcycle,15251,35.32
+Kedah,theft_other,8629,19.98
+Kedah,break_in,9357,21.67
+Kedah,theft_vehicle_motorcar,2300,5.33
+Kedah,causing_injury,2535,5.87
+Kedah,theft_vehicle_lorry,466,1.08
+Kedah,rape,1158,2.68
+Kedah,murder,125,0.29
+Kedah,gang_robbery,2081,4.82
+Kedah,solo_robbery,1283,2.97
+Kelantan,theft_vehicle_motorcycle,8940,35.27
+Kelantan,theft_other,4728,18.65
+Kelantan,break_in,4904,19.35
+Kelantan,theft_vehicle_motorcar,2567,10.13
+Kelantan,causing_injury,1685,6.65
+Kelantan,theft_vehicle_lorry,317,1.25
+Kelantan,rape,875,3.45
+Kelantan,murder,74,0.29
+Kelantan,gang_robbery,745,2.94
+Kelantan,solo_robbery,513,2.02
+Kuala Lumpur,theft_vehicle_motorcycle,18932,24.37
+Kuala Lumpur,theft_other,20695,26.63
+Kuala Lumpur,break_in,7947,10.23
+Kuala Lumpur,theft_vehicle_motorcar,9206,11.85
+Kuala Lumpur,causing_injury,3661,4.71
+Kuala Lumpur,theft_vehicle_lorry,1700,2.19
+Kuala Lumpur,rape,805,1.04
+Kuala Lumpur,murder,202,0.26
+Kuala Lumpur,gang_robbery,8535,10.98
+Kuala Lumpur,solo_robbery,6018,7.75
+Melaka,theft_vehicle_motorcycle,5214,29.0
+Melaka,theft_other,3685,20.49
+Melaka,break_in,3988,22.18
+Melaka,theft_vehicle_motorcar,644,3.58
+Melaka,causing_injury,1283,7.14
+Melaka,theft_vehicle_lorry,121,0.67
+Melaka,rape,431,2.4
+Melaka,murder,66,0.37
+Melaka,gang_robbery,1525,8.48
+Melaka,solo_robbery,1023,5.69
+Negeri Sembilan,theft_vehicle_motorcycle,4641,19.84
+Negeri Sembilan,theft_other,6694,28.62
+Negeri Sembilan,break_in,5376,22.98
+Negeri Sembilan,theft_vehicle_motorcar,976,4.17
+Negeri Sembilan,causing_injury,1746,7.46
+Negeri Sembilan,theft_vehicle_lorry,372,1.59
+Negeri Sembilan,rape,608,2.6
+Negeri Sembilan,murder,86,0.37
+Negeri Sembilan,gang_robbery,1800,7.69
+Negeri Sembilan,solo_robbery,1093,4.67
+Pahang,theft_vehicle_motorcycle,5572,24.89
+Pahang,theft_other,6293,28.11
+Pahang,break_in,4984,22.26
+Pahang,theft_vehicle_motorcar,1110,4.96
+Pahang,causing_injury,1541,6.88
+Pahang,theft_vehicle_lorry,330,1.47
+Pahang,rape,968,4.32
+Pahang,murder,90,0.4
+Pahang,gang_robbery,958,4.28
+Pahang,solo_robbery,539,2.41
+Penang,theft_vehicle_motorcycle,11776,32.13
+Penang,theft_other,8248,22.5
+Penang,break_in,6569,17.92
+Penang,theft_vehicle_motorcar,2018,5.51
+Penang,causing_injury,2653,7.24
+Penang,theft_vehicle_lorry,440,1.2
+Penang,rape,695,1.9
+Penang,murder,132,0.36
+Penang,gang_robbery,2428,6.62
+Penang,solo_robbery,1694,4.62
+Perak,theft_vehicle_motorcycle,9804,28.54
+Perak,theft_other,7753,22.57
+Perak,break_in,6700,19.5
+Perak,theft_vehicle_motorcar,1909,5.56
+Perak,causing_injury,2883,8.39
+Perak,theft_vehicle_lorry,485,1.41
+Perak,rape,781,2.27
+Perak,murder,247,0.72
+Perak,gang_robbery,2460,7.16
+Perak,solo_robbery,1330,3.87
+Perlis,theft_vehicle_motorcycle,931,23.16
+Perlis,theft_other,1394,34.69
+Perlis,break_in,790,19.66
+Perlis,theft_vehicle_motorcar,83,2.07
+Perlis,causing_injury,339,8.43
+Perlis,theft_vehicle_lorry,15,0.37
+Perlis,rape,221,5.5
+Perlis,murder,11,0.27
+Perlis,gang_robbery,105,2.61
+Perlis,solo_robbery,130,3.23
+Sabah,theft_vehicle_motorcycle,3789,9.73
+Sabah,theft_other,16415,42.15
+Sabah,break_in,12473,32.03
+Sabah,theft_vehicle_motorcar,1149,2.95
+Sabah,causing_injury,1549,3.98
+Sabah,theft_vehicle_lorry,544,1.4
+Sabah,rape,1516,3.89
+Sabah,murder,250,0.64
+Sabah,gang_robbery,669,1.72
+Sabah,solo_robbery,590,1.51
+Sarawak,theft_vehicle_motorcycle,10223,23.7
+Sarawak,theft_other,12476,28.92
+Sarawak,break_in,10934,25.35
+Sarawak,theft_vehicle_motorcar,2973,6.89
+Sarawak,causing_injury,2655,6.15
+Sarawak,theft_vehicle_lorry,492,1.14
+Sarawak,rape,1070,2.48
+Sarawak,murder,166,0.38
+Sarawak,gang_robbery,1404,3.25
+Sarawak,solo_robbery,743,1.72
+Selangor,theft_vehicle_motorcycle,41558,26.39
+Selangor,theft_other,32611,20.71
+Selangor,break_in,27778,17.64
+Selangor,theft_vehicle_motorcar,15057,9.56
+Selangor,causing_injury,8097,5.14
+Selangor,theft_vehicle_lorry,4593,2.92
+Selangor,rape,2656,1.69
+Selangor,murder,645,0.41
+Selangor,gang_robbery,16252,10.32
+Selangor,solo_robbery,8208,5.21
+Terengganu,theft_vehicle_motorcycle,3926,26.2
+Terengganu,theft_other,4221,28.17
+Terengganu,break_in,3729,24.89
+Terengganu,theft_vehicle_motorcar,687,4.58
+Terengganu,causing_injury,971,6.48
+Terengganu,theft_vehicle_lorry,104,0.69
+Terengganu,rape,572,3.82
+Terengganu,murder,36,0.24
+Terengganu,gang_robbery,389,2.6
+Terengganu,solo_robbery,349,2.33

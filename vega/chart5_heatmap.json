@@ -1,0 +1,119 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Crime fingerprint heatmap. Row-normalised % reveals crime mix per state. Blues: white=low, dark=high. Relative sort on x.",
+  "background": "transparent",
+  "config": {
+    "view": { "stroke": null },
+    "font": "Inter",
+    "axis": {
+      "grid": false,
+      "labelFont": "Inter",
+      "titleFont": "Inter",
+      "labelColor": "#71717a",
+      "domainColor": "#3a3530",
+      "tickColor": "#3a3530"
+    },
+    "legend": {
+      "labelFont": "Inter",
+      "titleFont": "Inter"
+    }
+  },
+  "title": {
+    "text": "Each state has its own crime fingerprint",
+    "subtitle": "Cells = % of state's total crimes. Darker = higher share. Sqrt scale keeps rare types visible.",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "subtitleFontSize": 11,
+    "subtitleColor": "#71717a",
+    "anchor": "start",
+    "offset": 8
+  },
+  "width": 460,
+  "height": 360,
+  "padding": {"right": 30},
+  "data": { "url": "data/state_type_pct.csv" },
+  "transform": [
+    {
+      "calculate": "datum.type === 'theft_vehicle_motorcycle' ? 'Motorcycle theft' : datum.type === 'theft_other' ? 'Other theft' : datum.type === 'break_in' ? 'Break-in' : datum.type === 'theft_vehicle_motorcar' ? 'Car theft' : datum.type === 'gang_robbery' ? 'Gang robbery' : datum.type === 'solo_robbery' ? 'Solo robbery' : datum.type === 'causing_injury' ? 'Causing injury' : datum.type === 'theft_vehicle_lorry' ? 'Lorry theft' : datum.type === 'rape' ? 'Rape' : 'Murder'",
+      "as": "label"
+    }
+  ],
+  "params": [
+    {
+      "name": "stateHover",
+      "select": {
+        "type": "point",
+        "fields": ["state"],
+        "on": "mouseover"
+      }
+    }
+  ],
+  "mark": {
+    "type": "rect",
+    "stroke": "white",
+    "strokeWidth": 0.5
+  },
+  "encoding": {
+    "x": {
+      "field": "label",
+      "type": "nominal",
+      "sort": { "op": "mean", "field": "pct", "order": "descending" },
+      "axis": {
+        "title": null,
+        "labelAngle": -40,
+        "labelFontSize": 11,
+        "labelLimit": 130,
+        "labelPadding": 4
+      }
+    },
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": { "op": "sum", "field": "crimes", "order": "descending" },
+      "axis": {
+        "title": null,
+        "labelFontSize": 11,
+        "labelPadding": 6
+      }
+    },
+    "color": {
+      "field": "pct",
+      "type": "quantitative",
+      "scale": {
+        "range": ["#ede9fe", "#3b0764"],
+        "type": "sqrt",
+        "domain": [0, 42],
+        "nice": false
+      },
+      "legend": {
+        "title": "% of total crimes",
+        "titleFontSize": 11,
+        "titleFontWeight": 600,
+        "titleLimit": 200,
+        "titlePadding": 8,
+        "orient": "right",
+        "gradientLength": 200,
+        "gradientThickness": 20,
+        "values": [0, 10.5, 21, 31.5, 42],
+        "labelFontSize": 11,
+        "labelOffset": 6,
+        "labelExpr": "datum.value === 0 ? '0%' : datum.value === 10.5 ? '25%' : datum.value === 21 ? '50%' : datum.value === 31.5 ? '75%' : '100%'",
+        "offset": 16
+      }
+    },
+    "opacity": {
+      "condition": {
+        "param": "stateHover",
+        "value": 1,
+        "empty": true
+      },
+      "value": 0.2
+    },
+    "tooltip": [
+      { "field": "state", "type": "nominal", "title": "State" },
+      { "field": "label", "type": "nominal", "title": "Crime type" },
+      { "field": "pct", "type": "quantitative", "title": "% of state total", "format": ".1f" },
+      { "field": "crimes", "type": "quantitative", "title": "Cases (2016–2023)", "format": "," }
+    ]
+  }
+}

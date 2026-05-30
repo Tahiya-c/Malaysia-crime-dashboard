@@ -1,0 +1,169 @@
+"state","type","crimes"
+"Johor","break_in",9205
+"Johor","causing_injury",4010
+"Johor","murder",332
+"Johor","rape",1512
+"Johor","robbery_gang_armed",16
+"Johor","robbery_gang_unarmed",5198
+"Johor","robbery_solo_armed",4
+"Johor","robbery_solo_unarmed",2639
+"Johor","theft_other",12818
+"Johor","theft_vehicle_lorry",1525
+"Johor","theft_vehicle_motorcar",6602
+"Johor","theft_vehicle_motorcycle",22102
+"Kedah","break_in",9357
+"Kedah","causing_injury",2535
+"Kedah","murder",125
+"Kedah","rape",1158
+"Kedah","robbery_gang_armed",9
+"Kedah","robbery_gang_unarmed",2072
+"Kedah","robbery_solo_armed",5
+"Kedah","robbery_solo_unarmed",1278
+"Kedah","theft_other",8629
+"Kedah","theft_vehicle_lorry",466
+"Kedah","theft_vehicle_motorcar",2300
+"Kedah","theft_vehicle_motorcycle",15251
+"Kelantan","break_in",4904
+"Kelantan","causing_injury",1685
+"Kelantan","murder",74
+"Kelantan","rape",875
+"Kelantan","robbery_gang_armed",17
+"Kelantan","robbery_gang_unarmed",728
+"Kelantan","robbery_solo_armed",1
+"Kelantan","robbery_solo_unarmed",512
+"Kelantan","theft_other",4728
+"Kelantan","theft_vehicle_lorry",317
+"Kelantan","theft_vehicle_motorcar",2567
+"Kelantan","theft_vehicle_motorcycle",8940
+"Kuala Lumpur","break_in",7947
+"Kuala Lumpur","causing_injury",3661
+"Kuala Lumpur","murder",202
+"Kuala Lumpur","rape",805
+"Kuala Lumpur","robbery_gang_armed",28
+"Kuala Lumpur","robbery_gang_unarmed",8507
+"Kuala Lumpur","robbery_solo_armed",12
+"Kuala Lumpur","robbery_solo_unarmed",6006
+"Kuala Lumpur","theft_other",20695
+"Kuala Lumpur","theft_vehicle_lorry",1700
+"Kuala Lumpur","theft_vehicle_motorcar",9206
+"Kuala Lumpur","theft_vehicle_motorcycle",18932
+"Melaka","break_in",3988
+"Melaka","causing_injury",1283
+"Melaka","murder",66
+"Melaka","rape",431
+"Melaka","robbery_gang_armed",5
+"Melaka","robbery_gang_unarmed",1520
+"Melaka","robbery_solo_armed",0
+"Melaka","robbery_solo_unarmed",1023
+"Melaka","theft_other",3685
+"Melaka","theft_vehicle_lorry",121
+"Melaka","theft_vehicle_motorcar",644
+"Melaka","theft_vehicle_motorcycle",5214
+"Negeri Sembilan","break_in",5376
+"Negeri Sembilan","causing_injury",1746
+"Negeri Sembilan","murder",86
+"Negeri Sembilan","rape",608
+"Negeri Sembilan","robbery_gang_armed",4
+"Negeri Sembilan","robbery_gang_unarmed",1796
+"Negeri Sembilan","robbery_solo_armed",5
+"Negeri Sembilan","robbery_solo_unarmed",1088
+"Negeri Sembilan","theft_other",6694
+"Negeri Sembilan","theft_vehicle_lorry",372
+"Negeri Sembilan","theft_vehicle_motorcar",976
+"Negeri Sembilan","theft_vehicle_motorcycle",4641
+"Pahang","break_in",4984
+"Pahang","causing_injury",1541
+"Pahang","murder",90
+"Pahang","rape",968
+"Pahang","robbery_gang_armed",5
+"Pahang","robbery_gang_unarmed",953
+"Pahang","robbery_solo_armed",1
+"Pahang","robbery_solo_unarmed",538
+"Pahang","theft_other",6293
+"Pahang","theft_vehicle_lorry",330
+"Pahang","theft_vehicle_motorcar",1110
+"Pahang","theft_vehicle_motorcycle",5572
+"Penang","break_in",6569
+"Penang","causing_injury",2653
+"Penang","murder",132
+"Penang","rape",695
+"Penang","robbery_gang_armed",9
+"Penang","robbery_gang_unarmed",2419
+"Penang","robbery_solo_armed",2
+"Penang","robbery_solo_unarmed",1692
+"Penang","theft_other",8248
+"Penang","theft_vehicle_lorry",440
+"Penang","theft_vehicle_motorcar",2018
+"Penang","theft_vehicle_motorcycle",11776
+"Perak","break_in",6700
+"Perak","causing_injury",2883
+"Perak","murder",247
+"Perak","rape",781
+"Perak","robbery_gang_armed",18
+"Perak","robbery_gang_unarmed",2442
+"Perak","robbery_solo_armed",4
+"Perak","robbery_solo_unarmed",1326
+"Perak","theft_other",7753
+"Perak","theft_vehicle_lorry",485
+"Perak","theft_vehicle_motorcar",1909
+"Perak","theft_vehicle_motorcycle",9804
+"Perlis","break_in",790
+"Perlis","causing_injury",339
+"Perlis","murder",11
+"Perlis","rape",221
+"Perlis","robbery_gang_armed",2
+"Perlis","robbery_gang_unarmed",103
+"Perlis","robbery_solo_armed",0
+"Perlis","robbery_solo_unarmed",130
+"Perlis","theft_other",1394
+"Perlis","theft_vehicle_lorry",15
+"Perlis","theft_vehicle_motorcar",83
+"Perlis","theft_vehicle_motorcycle",931
+"Sabah","break_in",12473
+"Sabah","causing_injury",1549
+"Sabah","murder",250
+"Sabah","rape",1516
+"Sabah","robbery_gang_armed",12
+"Sabah","robbery_gang_unarmed",657
+"Sabah","robbery_solo_armed",1
+"Sabah","robbery_solo_unarmed",589
+"Sabah","theft_other",16415
+"Sabah","theft_vehicle_lorry",544
+"Sabah","theft_vehicle_motorcar",1149
+"Sabah","theft_vehicle_motorcycle",3789
+"Sarawak","break_in",10934
+"Sarawak","causing_injury",2655
+"Sarawak","murder",166
+"Sarawak","rape",1070
+"Sarawak","robbery_gang_armed",31
+"Sarawak","robbery_gang_unarmed",1373
+"Sarawak","robbery_solo_armed",5
+"Sarawak","robbery_solo_unarmed",738
+"Sarawak","theft_other",12476
+"Sarawak","theft_vehicle_lorry",492
+"Sarawak","theft_vehicle_motorcar",2973
+"Sarawak","theft_vehicle_motorcycle",10223
+"Selangor","break_in",27778
+"Selangor","causing_injury",8097
+"Selangor","murder",645
+"Selangor","rape",2656
+"Selangor","robbery_gang_armed",47
+"Selangor","robbery_gang_unarmed",16205
+"Selangor","robbery_solo_armed",22
+"Selangor","robbery_solo_unarmed",8186
+"Selangor","theft_other",32611
+"Selangor","theft_vehicle_lorry",4593
+"Selangor","theft_vehicle_motorcar",15057
+"Selangor","theft_vehicle_motorcycle",41558
+"Terengganu","break_in",3729
+"Terengganu","causing_injury",971
+"Terengganu","murder",36
+"Terengganu","rape",572
+"Terengganu","robbery_gang_armed",2
+"Terengganu","robbery_gang_unarmed",387
+"Terengganu","robbery_solo_armed",5
+"Terengganu","robbery_solo_unarmed",344
+"Terengganu","theft_other",4221
+"Terengganu","theft_vehicle_lorry",104
+"Terengganu","theft_vehicle_motorcar",687
+"Terengganu","theft_vehicle_motorcycle",3926

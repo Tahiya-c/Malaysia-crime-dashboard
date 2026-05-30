@@ -1,0 +1,107 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "transparent",
+  "config": {
+    "view": {"stroke": null}, "font": "Inter",
+    "axis": {
+      "labelFont": "Inter", "titleFont": "Inter",
+      "labelColor": "#a1a1aa", "titleColor": "#e4e4e7",
+      "domainColor": "#3a3530", "tickColor": "#3a3530",
+      "gridColor": "rgba(128,128,128,0.12)"
+    }
+  },
+  "width": 460, "height": 300,
+  "data": {"url": "data/national_indexed.csv"},
+  "layer": [
+    {
+      "mark": {"type": "rect", "color": "#fef3c7", "opacity": 0.28},
+      "encoding": {
+        "x":  {"datum": "2020", "type": "ordinal"},
+        "x2": {"datum": "2021"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "color": "#52525b", "strokeDash": [4, 4], "opacity": 0.6},
+      "encoding": {"y": {"datum": 100}}
+    },
+    {
+      "mark": {"type": "line", "strokeWidth": 2.5, "interpolate": "monotone"},
+      "encoding": {
+        "x": {
+          "field": "year", "type": "ordinal",
+          "axis": {"title": null, "labelAngle": 0, "labelPadding": 6}
+        },
+        "y": {
+          "field": "idx", "type": "quantitative",
+          "axis": {
+            "title": "Index (2016 = 100)",
+            "tickCount": 5, "labelFontSize": 10, "titlePadding": 8
+          },
+          "scale": {"domain": [35, 110]}
+        },
+        "color": {
+          "field": "category", "type": "nominal",
+          "scale": {"domain": ["assault", "property"], "range": ["#a855f7", "#f59e0b"]},
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true, "size": 55, "stroke": "white", "strokeWidth": 1.2},
+      "encoding": {
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"field": "idx", "type": "quantitative"},
+        "color": {
+          "field": "category", "type": "nominal",
+          "scale": {"domain": ["assault", "property"], "range": ["#a855f7", "#f59e0b"]},
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "year", "type": "ordinal", "title": "Year"},
+          {"field": "category", "type": "nominal", "title": "Category"},
+          {"field": "crimes", "type": "quantitative", "title": "Cases", "format": ","},
+          {"field": "idx", "type": "quantitative", "title": "Index (2016=100)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.year == '2023'"},
+        {
+          "calculate": "datum.category == 'assault' ? datum.idx + 8 : datum.idx - 7",
+          "as": "label_y"
+        },
+        {
+          "calculate": "datum.category == 'assault' ? 'Assault' : 'Property'",
+          "as": "label"
+        }
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 8, "fontSize": 11, "fontWeight": 600},
+      "encoding": {
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"field": "label_y", "type": "quantitative"},
+        "color": {
+          "field": "category", "type": "nominal",
+          "scale": {"domain": ["assault", "property"], "range": ["#a855f7", "#f59e0b"]},
+          "legend": null
+        },
+        "text": {"field": "label", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "strokeDash": [3, 3], "color": "#a16207", "strokeWidth": 1},
+      "encoding": {"x": {"datum": "2020", "type": "ordinal"}}
+    },
+    {
+      "mark": {
+        "type": "text", "align": "left", "dx": 5, "dy": -6,
+        "color": "#a16207", "fontSize": 10, "fontStyle": "italic", "fontWeight": 600
+      },
+      "encoding": {
+        "x": {"datum": "2020", "type": "ordinal"},
+        "y": {"value": 10},
+        "text": {"value": "MCO 2020"}
+      }
+    }
+  ]
+}
