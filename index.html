@@ -880,6 +880,30 @@ async function embedAll() {
   updateDonutCentreText();
   setTimeout(updateChart2Labels, 200);
   setTimeout(updateChart9Labels, 200);
+  setTimeout(updateChart7Labels, 200);
+}
+
+function updateChart7Labels() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const colour = dark ? '#f2ede6' : '#1a1714';
+  const chart7 = document.querySelector('#chart7 .chart-wrap svg');
+  if (!chart7) return;
+  chart7.querySelectorAll('text').forEach(el => {
+    if (el.closest('.role-axis') || el.closest('.role-legend') || el.closest('.role-title')) return;
+    const t = el.textContent.trim();
+    if (t && t.length > 0) el.style.fill = colour;
+  });
+}
+
+function updateChart7Labels() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const colour = dark ? '#f2ede6' : '#1a1714';
+  const chart7 = document.querySelector('#chart7 .chart-wrap svg');
+  if (!chart7) return;
+  chart7.querySelectorAll('text').forEach(el => {
+    if (el.closest('.role-axis') || el.closest('.role-legend') || el.closest('.role-title')) return;
+    el.style.fill = colour;
+  });
 }
 
 function updateChart9Labels() {
@@ -947,6 +971,7 @@ function applyTheme(dark, reEmbed) {
     updateDonutCentreText();
     updateChart2Labels();
     updateChart9Labels();
+    updateChart7Labels();
   }
 }
 
