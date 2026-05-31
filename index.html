@@ -397,7 +397,7 @@ section > .grid-lg-sm:last-of-type { margin-bottom: 0; }
 .chart-wrap { width:100%; overflow:hidden; display:flex; justify-content:center; }
 
 /* min heights */
-#chart1  .chart-wrap { min-height: 600px; }
+#chart1  .chart-wrap { min-height: 760px; }
 #chart2  .chart-wrap { min-height: 600px; }
 #chart3  .chart-wrap { min-height: 360px; }
 #chart4  .chart-wrap { min-height: 360px; }
@@ -721,21 +721,37 @@ form.vega-bindings select {
       </div>
       <div class="card reveal" id="chart8">
         <div class="card-title">2016 → 2023 slope</div>
-        <div class="card-sub">Lines coloured by % decline. Darker = steeper fall. Right-side labels show the % change.</div>
+        <div class="card-sub">
+          Every state recorded fewer crimes in 2023 than 2016.<br>
+          <strong>Selangor, Johor and Kuala Lumpur</strong> declined 56–73%.<br>
+          Yet all three still dominate the district crime rankings.<br>
+          The gap between Selangor and Johor narrowed from <strong>18,282 to 8,409</strong>.
+        </div>
         <div class="chart-wrap"></div>
       </div>
     </div>
 
     <div class="card reveal" id="chart9">
-      <div class="card-title">District safety profile: property vs assault</div>
-      <div class="card-sub">Each dot = one district. Dashed lines mark national medians. Labels show the worst outlier per quadrant.</div>
+      <div class="card-title">Volume vs violence: two kinds of district risk</div>
+      <div class="card-sub">
+          Not all high-crime districts are equally dangerous.<br>
+          A district can have <strong>many crimes but mostly theft</strong> — or<br>
+          <strong>few crimes overall but a high rate of violence</strong>.<br>
+          The <strong>top-right corner</strong> = large districts with high violence.<br>
+          Hover any dot to see the full profile.
+        </div>
       <div class="chart-wrap"></div>
     </div>
 
     <div class="grid-2">
       <div class="card reveal" id="chart10">
         <div class="card-title">Single-state explorer</div>
-        <div class="card-sub">Blue = above 8-year mean · coral = below · dashed line marks the mean. Pick any state.</div>
+        <div class="card-sub">
+          Pick any state to zoom in on its year-by-year trend.<br>
+          This is the <strong>detailed view</strong> of the small multiples panel on the right.<br>
+          The dashed line marks that state's own 8-year average.<br>
+          Use both together — overview then detail.
+        </div>
         <div class="chart-wrap"></div>
       </div>
       <div class="card reveal" id="chart11">
@@ -849,13 +865,39 @@ async function embedAll() {
     if (!wrap) { console.warn('No wrap found for', id); continue; }
     wrap.innerHTML = '';
     try {
-      await vegaEmbed(wrap, url, { renderer: 'svg', actions: false, config: cfg });
+      const result = await vegaEmbed(wrap, url, { renderer: 'svg', actions: false, config: cfg });
+      // For chart2: recolour labels whenever the metric signal changes
+      if (id === 'chart2' && result && result.view) {
+        result.view.addSignalListener('metric', () => {
+          // Small delay to let Vega finish re-rendering the SVG text
+          setTimeout(updateChart2Labels, 80);
+        });
+      }
     } catch (e) {
       console.warn('Embed failed:', url, e);
     }
   }
   updateDonutCentreText();
-  updateChart2Labels();
+  setTimeout(updateChart2Labels, 200);
+  setTimeout(updateChart9Labels, 200);
+}
+
+function updateChart9Labels() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const colour = dark ? '#f2ede6' : '#1a1714';
+  const soft   = dark ? '#9b948a' : '#9b948a';
+  const chart9 = document.querySelector('#chart9 .chart-wrap svg');
+  if (!chart9) return;
+  chart9.querySelectorAll('text').forEach(el => {
+    const t = el.textContent.trim();
+    if (!t || el.closest('.role-legend') || el.closest('.role-title') || el.closest('.role-axis')) return;
+    // Quadrant corner labels stay soft grey on both themes
+    if (el.style.fontStyle === 'italic' || el.getAttribute('font-style') === 'italic') {
+      el.style.fill = soft;
+    } else {
+      el.style.fill = colour;
+    }
+  });
 }
 
 function updateChart2Labels() {
@@ -904,6 +946,7 @@ function applyTheme(dark, reEmbed) {
   else {
     updateDonutCentreText();
     updateChart2Labels();
+    updateChart9Labels();
   }
 }
 

@@ -1,66 +1,91 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Slope chart 2016\u20132023. Top 3 states highlighted in red. Bracket annotation shows Selangor\u2013Johor gap.",
   "background": "transparent",
   "config": {
-    "view": { "stroke": null },
+    "view": {
+      "stroke": null
+    },
     "font": "Inter",
     "axis": {
       "labelFont": "Inter",
       "titleFont": "Inter",
-      "labelColor": "#71717a",
+      "labelColor": "#52525b",
       "titleColor": "#3f3f46",
       "domainColor": "#d4d4d8",
       "tickColor": "#d4d4d8",
-      "gridColor": "rgba(0,0,0,0.06)"
+      "gridColor": "rgba(128,128,128,0.12)"
     }
   },
   "title": {
-    "text": "Crime fell everywhere — the question is how fast.",
-    "subtitle": "Index = 100 in 2016 per state. Lower 2023 value = steeper decline.",
+    "text": "Every state fell \u2014 but Selangor still leads by far",
+    "subtitle": "Selangor, Johor and KL dominate. All three declined 56\u201373% since 2016.",
     "fontSize": 14,
     "fontWeight": 600,
     "subtitleFontSize": 10,
     "subtitleColor": "#71717a",
     "anchor": "start",
-    "offset": 10
+    "offset": 8
   },
   "width": 460,
-  "height": 500,
-  "data": { "url": "data/slope_data.csv" },
+  "height": 480,
+  "data": {
+    "url": "data/slope_data.csv"
+  },
   "transform": [
     {
       "window": [
-        { "op": "first_value", "field": "crimes", "as": "v_first" },
-        { "op": "last_value",  "field": "crimes", "as": "v_last"  }
+        {
+          "op": "first_value",
+          "field": "crimes",
+          "as": "v_first"
+        },
+        {
+          "op": "last_value",
+          "field": "crimes",
+          "as": "v_last"
+        }
       ],
-      "groupby": ["state"],
-      "sort": [{ "field": "year", "order": "ascending" }],
-      "frame": [null, null]
-    },
-    {
-      "calculate": "(datum.crimes / datum.v_first) * 100",
-      "as": "index_val"
+      "groupby": [
+        "state"
+      ],
+      "sort": [
+        {
+          "field": "year",
+          "order": "ascending"
+        }
+      ],
+      "frame": [
+        null,
+        null
+      ]
     },
     {
       "calculate": "(datum.v_last - datum.v_first) / datum.v_first * 100",
       "as": "delta_pct"
+    },
+    {
+      "calculate": "datum.year == 2016 || datum.year == 2023 ? datum.year : null",
+      "as": "yr_check"
+    },
+    {
+      "filter": "datum.year == 2016 || datum.year == 2023"
     }
   ],
   "layer": [
-
     {
-      "description": "GREY — lines",
+      "description": "Muted background lines",
       "transform": [
         {
-          "filter": "datum.state !== 'Selangor' && datum.state !== 'W.P. Kuala Lumpur' && datum.state !== 'Johor' && datum.state !== 'Pulau Pinang' && datum.state !== 'Sabah' && datum.state !== 'Perlis'"
+          "filter": "datum.state !== 'Selangor' && datum.state !== 'Johor' && datum.state !== 'Kuala Lumpur'"
         }
       ],
       "mark": {
         "type": "line",
         "interpolate": "linear",
-        "strokeWidth": 0.9,
-        "opacity": 0.3,
-        "color": "#BBBBBB"
+        "strokeWidth": 1.2,
+        "opacity": 0.2,
+        "color": "#A1A1AA"
       },
       "encoding": {
         "x": {
@@ -68,224 +93,355 @@
           "type": "ordinal",
           "axis": {
             "title": null,
-            "labelFontSize": 13,
+            "labelFontSize": 12,
             "labelFontWeight": 600,
             "domain": false,
             "ticks": false,
             "orient": "top",
-            "labelPadding": 10
+            "labelPadding": 8
           }
         },
         "y": {
-          "field": "index_val",
+          "field": "crimes",
           "type": "quantitative",
-          "scale": { "domain": [20, 105] },
+          "scale": {
+            "domain": [
+              0,
+              33000
+            ]
+          },
           "axis": {
-            "title": "Index (2016 = 100)",
-            "titleFontSize": 10,
-            "values": [20, 30, 40, 50, 60, 70, 80, 90, 100],
+            "title": "Total crimes",
+            "format": "~s",
             "grid": true,
-            "gridDash": [3, 3],
+            "tickCount": 8,
             "labelFontSize": 9,
-            "labelColor": "#a1a1aa",
-            "format": ".0f"
+            "labelColor": "#a1a1aa"
           }
         },
-        "detail": { "field": "state", "type": "nominal" },
-        "tooltip": [
-          { "field": "state",     "type": "nominal",      "title": "State"    },
-          { "field": "v_first",   "type": "quantitative", "title": "2016",    "format": ","    },
-          { "field": "v_last",    "type": "quantitative", "title": "2023",    "format": ","    },
-          { "field": "delta_pct", "type": "quantitative", "title": "% change","format": "+.0f" },
-          { "field": "index_val", "type": "quantitative", "title": "Index",   "format": ".1f"  }
-        ]
+        "detail": {
+          "field": "state"
+        }
       }
     },
-
     {
-      "description": "GREY — points",
+      "description": "Muted background circles",
       "transform": [
         {
-          "filter": "datum.state !== 'Selangor' && datum.state !== 'W.P. Kuala Lumpur' && datum.state !== 'Johor' && datum.state !== 'Pulau Pinang' && datum.state !== 'Sabah' && datum.state !== 'Perlis'"
+          "filter": "datum.state !== 'Selangor' && datum.state !== 'Johor' && datum.state !== 'Kuala Lumpur'"
         }
       ],
       "mark": {
         "type": "circle",
         "size": 30,
-        "opacity": 0.3,
-        "color": "#BBBBBB"
+        "opacity": 0.25,
+        "color": "#A1A1AA"
       },
       "encoding": {
-        "x": { "field": "year",      "type": "ordinal"      },
-        "y": { "field": "index_val", "type": "quantitative" }
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        }
       }
     },
-
     {
-      "description": "MID — lines",
-      "transform": [
-        {
-          "filter": "datum.state === 'Johor' || datum.state === 'Pulau Pinang' || datum.state === 'Sabah' || datum.state === 'Perlis'"
-        }
-      ],
-      "mark": {
-        "type": "line",
-        "interpolate": "linear",
-        "strokeWidth": 1.6,
-        "opacity": 0.7,
-        "color": "#7B8B99"
-      },
-      "encoding": {
-        "x": { "field": "year", "type": "ordinal" },
-        "y": { "field": "index_val", "type": "quantitative" },
-        "detail": { "field": "state", "type": "nominal" },
-        "tooltip": [
-          { "field": "state",     "type": "nominal",      "title": "State"    },
-          { "field": "v_first",   "type": "quantitative", "title": "2016",    "format": ","    },
-          { "field": "v_last",    "type": "quantitative", "title": "2023",    "format": ","    },
-          { "field": "delta_pct", "type": "quantitative", "title": "% change","format": "+.0f" },
-          { "field": "index_val", "type": "quantitative", "title": "Index",   "format": ".1f"  }
+      "description": "Others label for grey lines",
+      "data": {
+        "values": [
+          {
+            "yr": "2016",
+            "y": 7440
+          }
         ]
-      }
-    },
-
-    {
-      "description": "MID — points",
-      "transform": [
-        {
-          "filter": "datum.state === 'Johor' || datum.state === 'Pulau Pinang' || datum.state === 'Sabah' || datum.state === 'Perlis'"
-        }
-      ],
+      },
       "mark": {
-        "type": "circle",
-        "size": 45,
-        "opacity": 0.75,
-        "color": "#7B8B99",
-        "stroke": "white",
-        "strokeWidth": 1
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 10,
+        "fontWeight": 500,
+        "color": "#a1a1aa",
+        "fontStyle": "italic"
       },
       "encoding": {
-        "x": { "field": "year",      "type": "ordinal"      },
-        "y": { "field": "index_val", "type": "quantitative" }
+        "x": {
+          "field": "yr",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Others"
+        }
       }
     },
-
     {
-      "description": "MID — right % labels only",
-      "transform": [
-        {
-          "filter": "(datum.state === 'Johor' || datum.state === 'Pulau Pinang' || datum.state === 'Sabah' || datum.state === 'Perlis') && datum.year == 2023"
+      "description": "Bracket line \u2014 gap between Selangor and Johor at 2016",
+      "data": {
+        "values": [
+          {
+            "yr": "2016",
+            "lo": 12941,
+            "hi": 31223
+          },
+          {
+            "yr": "2023",
+            "lo": 5330,
+            "hi": 13739
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#C0392B",
+        "strokeWidth": 1,
+        "strokeDash": [
+          3,
+          3
+        ],
+        "opacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "field": "yr",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "lo",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "hi"
         }
-      ],
+      }
+    },
+    {
+      "description": "Gap label 2016",
+      "data": {
+        "values": [
+          {
+            "yr": "2016",
+            "mid": 22082,
+            "label": "gap: 18,282"
+          }
+        ]
+      },
       "mark": {
         "type": "text",
         "align": "left",
-        "dx": 10,
-        "fontSize": 9,
-        "fontWeight": 500,
-        "color": "#7B8B99"
+        "dx": 8,
+        "fontSize": 8.5,
+        "color": "#C0392B",
+        "opacity": 0.7,
+        "fontStyle": "italic"
       },
       "encoding": {
-        "x": { "field": "year",      "type": "ordinal"      },
-        "y": { "field": "index_val", "type": "quantitative" },
-        "text": { "field": "delta_pct", "type": "quantitative", "format": "+.0f" }
+        "x": {
+          "field": "yr",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
       }
     },
-
     {
-      "description": "KEY — lines",
+      "description": "Gap label 2023",
+      "data": {
+        "values": [
+          {
+            "yr": "2023",
+            "mid": 9534,
+            "label": "gap: 8,409"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "fontSize": 8.5,
+        "color": "#C0392B",
+        "opacity": 0.7,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "x": {
+          "field": "yr",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "description": "Key lines \u2014 top 3 states",
       "transform": [
         {
-          "filter": "datum.state === 'Selangor' || datum.state === 'W.P. Kuala Lumpur'"
+          "filter": "datum.state === 'Selangor' || datum.state === 'Johor' || datum.state === 'Kuala Lumpur'"
         }
       ],
       "mark": {
         "type": "line",
         "interpolate": "linear",
-        "strokeWidth": 2.5,
-        "opacity": 1,
+        "strokeWidth": 2.8,
         "color": "#C0392B"
       },
       "encoding": {
-        "x": { "field": "year", "type": "ordinal" },
-        "y": { "field": "index_val", "type": "quantitative" },
-        "detail": { "field": "state", "type": "nominal" },
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "state"
+        },
         "tooltip": [
-          { "field": "state",     "type": "nominal",      "title": "State"    },
-          { "field": "v_first",   "type": "quantitative", "title": "2016",    "format": ","    },
-          { "field": "v_last",    "type": "quantitative", "title": "2023",    "format": ","    },
-          { "field": "delta_pct", "type": "quantitative", "title": "% change","format": "+.0f" },
-          { "field": "index_val", "type": "quantitative", "title": "Index",   "format": ".1f"  }
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "v_first",
+            "type": "quantitative",
+            "title": "2016",
+            "format": ","
+          },
+          {
+            "field": "v_last",
+            "type": "quantitative",
+            "title": "2023",
+            "format": ","
+          },
+          {
+            "field": "delta_pct",
+            "type": "quantitative",
+            "title": "Change",
+            "format": "+.1f"
+          }
         ]
       }
     },
-
     {
-      "description": "KEY — points",
+      "description": "Key circles",
       "transform": [
         {
-          "filter": "datum.state === 'Selangor' || datum.state === 'W.P. Kuala Lumpur'"
+          "filter": "datum.state === 'Selangor' || datum.state === 'Johor' || datum.state === 'Kuala Lumpur'"
         }
       ],
       "mark": {
         "type": "circle",
         "size": 60,
-        "opacity": 1,
         "color": "#C0392B",
         "stroke": "white",
         "strokeWidth": 1.2
       },
       "encoding": {
-        "x": { "field": "year",      "type": "ordinal"      },
-        "y": { "field": "index_val", "type": "quantitative" }
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        }
       }
     },
-
     {
-      "description": "KEY — right % label at 2023 endpoint",
+      "description": "State name labels left of 2016",
       "transform": [
         {
-          "filter": "(datum.state === 'Selangor' || datum.state === 'W.P. Kuala Lumpur') && datum.year == 2023"
+          "filter": "(datum.state === 'Selangor' || datum.state === 'Johor' || datum.state === 'Kuala Lumpur') && datum.year == 2016"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#C0392B"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "state",
+          "type": "nominal"
+        },
+        "dy": {
+          "condition": {
+            "test": "datum.state === 'Kuala Lumpur'",
+            "value": -8
+          },
+          "value": 0
+        }
+      }
+    },
+    {
+      "description": "% decline labels right of 2023",
+      "transform": [
+        {
+          "filter": "(datum.state === 'Selangor' || datum.state === 'Johor' || datum.state === 'Kuala Lumpur') && datum.year == 2023"
         }
       ],
       "mark": {
         "type": "text",
         "align": "left",
         "dx": 10,
-        "fontSize": 10,
+        "fontSize": 10.5,
         "fontWeight": 700,
         "color": "#C0392B"
       },
       "encoding": {
-        "x": { "field": "year",      "type": "ordinal"      },
-        "y": { "field": "index_val", "type": "quantitative" },
-        "text": { "field": "delta_pct", "type": "quantitative", "format": "+.0f" }
-      }
-    },
-
-    {
-      "description": "KEY — state name below % label at 2023 endpoint",
-      "transform": [
-        {
-          "filter": "(datum.state === 'Selangor' || datum.state === 'W.P. Kuala Lumpur') && datum.year == 2023"
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "crimes",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "delta_pct",
+          "type": "quantitative",
+          "format": "+.0f"
+        },
+        "dy": {
+          "condition": {
+            "test": "datum.state === 'Kuala Lumpur'",
+            "value": 8
+          },
+          "value": -2
         }
-      ],
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 10,
-        "dy": 13,
-        "fontSize": 9,
-        "fontWeight": 400,
-        "color": "#C0392B",
-        "opacity": 0.7
-      },
-      "encoding": {
-        "x": { "field": "year",     "type": "ordinal" },
-        "y": { "field": "index_val","type": "quantitative" },
-        "text": { "field": "state", "type": "nominal" }
       }
     }
-
   ]
 }

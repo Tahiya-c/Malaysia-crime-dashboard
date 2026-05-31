@@ -1,94 +1,134 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "District safety profile. Property crime (x) vs assault (y) with sqrt scaling so small districts remain readable. Four quadrants (within the 7-colour limit) colour each district by its profile. Labels for the top 5 outliers.",
+  "description": "Scatter: total crimes (log x) vs assault % (y). Quadrant labels explain meaning. District labels for top outlier per quadrant. No stroke borders on text.",
   "background": "transparent",
   "config": {
-    "view": {"stroke": null}, "font": "Inter",
+    "view": {"stroke": null},
+    "font": "Inter",
     "axis": {
       "labelFont": "Inter", "titleFont": "Inter",
-      "labelColor": "#52525b", "titleColor": "#3f3f46",
+      "labelColor": "#71717a", "titleColor": "#3f3f46",
       "domainColor": "#d4d4d8", "tickColor": "#d4d4d8",
-      "gridColor": "rgba(0,0,0,0.04)"
+      "gridColor": "rgba(128,128,128,0.08)"
     },
     "legend": {"labelFont": "Inter", "titleFont": "Inter"}
   },
   "title": {
-    "text": "District safety profile: property crime vs assault",
-    "subtitle": "Each dot = one district. Top-right corner is where both pressures are above the national median.",
+    "text": "",
+    "subtitle": "X = total crimes (log scale) · Y = assault as % of crimes · Dashed lines = national medians.",
     "fontSize": 14, "fontWeight": 600,
     "subtitleFontSize": 10, "subtitleColor": "#71717a",
     "anchor": "start", "offset": 8
   },
-  "width": 780, "height": 460,
-  "data": {"url": "data/district_totals.csv"},
+  "width": 1010,
+  "height": 440,
+  "data": {"url": "data/district_profile.csv"},
   "transform": [
-    {"filter": "datum.total_property > 0 && datum.total_assault > 0"},
-    {"joinaggregate": [
-      {"op": "median", "field": "total_property", "as": "med_property"},
-      {"op": "median", "field": "total_assault",  "as": "med_assault"}
-    ]},
-    {"calculate": "datum.total_property >= datum.med_property && datum.total_assault >= datum.med_assault ? 'High property and assault' : datum.total_property >= datum.med_property && datum.total_assault <  datum.med_assault ? 'High property, low assault' : datum.total_property <  datum.med_property && datum.total_assault >= datum.med_assault ? 'Low property, high assault' : 'Low property and assault'", "as": "quadrant"}
+    {
+      "joinaggregate": [
+        {"op": "median", "field": "total_crimes", "as": "med_vol"},
+        {"op": "median", "field": "assault_pct",  "as": "med_pct"}
+      ]
+    },
+    {
+      "calculate": "datum.total_crimes >= datum.med_vol && datum.assault_pct >= datum.med_pct ? 'High volume · High violence' : datum.total_crimes >= datum.med_vol && datum.assault_pct < datum.med_pct ? 'High volume · Low violence' : datum.total_crimes < datum.med_vol && datum.assault_pct >= datum.med_pct ? 'Low volume · High violence' : 'Low volume · Low violence'",
+      "as": "quadrant"
+    }
   ],
   "layer": [
     {
-      "mark": {"type": "rule", "strokeDash": [4, 4], "color": "#a1a1aa", "strokeWidth": 1, "opacity": 0.6},
-      "encoding": {"x": {"field": "med_property", "type": "quantitative"}}
+      "mark": {"type": "rule", "strokeDash": [5,4], "color": "#a1a1aa", "strokeWidth": 1, "opacity": 0.55},
+      "encoding": {"x": {"field": "med_vol", "type": "quantitative"}}
     },
     {
-      "mark": {"type": "rule", "strokeDash": [4, 4], "color": "#a1a1aa", "strokeWidth": 1, "opacity": 0.6},
-      "encoding": {"y": {"field": "med_assault", "type": "quantitative"}}
+      "mark": {"type": "rule", "strokeDash": [5,4], "color": "#a1a1aa", "strokeWidth": 1, "opacity": 0.55},
+      "encoding": {"y": {"field": "med_pct", "type": "quantitative"}}
     },
     {
       "mark": {"type": "circle", "opacity": 0.72, "stroke": "white", "strokeWidth": 0.8},
       "encoding": {
         "x": {
-          "field": "total_property", "type": "quantitative",
-          "scale": {"type": "sqrt", "nice": true},
-          "axis": {"title": "Total property crimes (sqrt scale)", "format": ",", "labelFontSize": 10, "titlePadding": 10, "tickCount": 6}
+          "field": "total_crimes", "type": "quantitative",
+          "scale": {"type": "log", "nice": true},
+          "axis": {"title": "Total crimes 2016-2023 (log scale)", "format": "~s", "tickCount": 6, "labelFontSize": 10, "titlePadding": 10}
         },
         "y": {
-          "field": "total_assault", "type": "quantitative",
-          "scale": {"type": "sqrt", "nice": true},
-          "axis": {"title": "Total assault cases (sqrt scale)", "format": ",", "labelFontSize": 10, "titlePadding": 10, "tickCount": 6}
+          "field": "assault_pct", "type": "quantitative",
+          "scale": {"domain": [5, 42]},
+          "axis": {"title": "Assault as % of district's total crimes", "format": ".0f", "labelFontSize": 10, "titlePadding": 10, "tickCount": 6}
         },
         "color": {
           "field": "quadrant", "type": "nominal",
           "scale": {
-            "domain": ["High property and assault", "High property, low assault", "Low property, high assault", "Low property and assault"],
-            "range":  ["#d94a2b",                    "#3a7ca5",                    "#e08e45",                    "#c0c0c4"]
+            "domain": ["High volume · High violence","High volume · Low violence","Low volume · High violence","Low volume · Low violence"],
+            "range": ["#d55e00","#0072b2","#cc79a7","#b0b0b4"]
           },
-          "legend": {"orient": "bottom", "title": null, "labelFontSize": 10, "columns": 2, "symbolType": "circle"}
+          "legend": {"title": null, "orient": "bottom", "labelFontSize": 10, "columns": 2, "symbolType": "circle", "symbolSize": 90, "offset": 6}
         },
         "size": {
           "field": "total_crimes", "type": "quantitative",
-          "scale": {"type": "sqrt", "range": [40, 500]},
+          "scale": {"type": "sqrt", "range": [25, 400]},
           "legend": null
         },
         "tooltip": [
-          {"field": "district", "type": "nominal", "title": "District"},
-          {"field": "state", "type": "nominal", "title": "State"},
-          {"field": "total_crimes", "type": "quantitative", "title": "Total crimes", "format": ","},
-          {"field": "total_property", "type": "quantitative", "title": "Property", "format": ","},
-          {"field": "total_assault", "type": "quantitative", "title": "Assault", "format": ","},
-          {"field": "quadrant", "type": "nominal", "title": "Profile"}
+          {"field": "district",     "type": "nominal",      "title": "District"},
+          {"field": "state",        "type": "nominal",      "title": "State"},
+          {"field": "total_crimes", "type": "quantitative", "title": "Total crimes",  "format": ","},
+          {"field": "total_assault","type": "quantitative", "title": "Assault cases", "format": ","},
+          {"field": "assault_pct",  "type": "quantitative", "title": "Assault %",     "format": ".1f"},
+          {"field": "quadrant",     "type": "nominal",      "title": "Profile"}
         ]
       }
     },
     {
+      "description": "Top district label per quadrant — no stroke border, just plain black text",
       "transform": [
-        {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "total_crimes", "order": "descending"}]},
-        {"filter": "datum.rk <= 5"}
+        {
+          "window": [{"op": "rank", "as": "qrank"}],
+          "groupby": ["quadrant"],
+          "sort": [{"field": "total_crimes", "order": "descending"}]
+        },
+        {"filter": "datum.qrank === 1"}
       ],
       "mark": {
-        "type": "text", "align": "left", "baseline": "middle",
-        "dx": 10, "fontSize": 11, "fontWeight": 700,
-        "fill": "#d94a2b", "stroke": "white", "strokeWidth": 3,
-        "strokeJoin": "round", "paintOrder": "stroke"
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 9,
+        "dy": -8,
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#1a1714"
       },
       "encoding": {
-        "x": {"field": "total_property", "type": "quantitative", "scale": {"type": "sqrt"}},
-        "y": {"field": "total_assault",  "type": "quantitative", "scale": {"type": "sqrt"}},
-        "text": {"field": "district", "type": "nominal"}
+        "x": {"field": "total_crimes", "type": "quantitative", "scale": {"type": "log"}},
+        "y": {"field": "assault_pct",  "type": "quantitative"},
+        "text": {"field": "district",  "type": "nominal"}
+      }
+    },
+    {
+      "description": "Quadrant corner labels explaining meaning",
+      "data": {
+        "values": [
+          {"qx": 20000, "qy": 40, "label": "⚠ High crime · High violence", "anchor": "end"},
+          {"qx": 20000, "qy": 8,  "label": "Mostly property crime, high volume", "anchor": "end"},
+          {"qx": 100,   "qy": 40, "label": "Small but violent", "anchor": "start"},
+          {"qx": 100,   "qy": 8,  "label": "Low concern", "anchor": "start"}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 9,
+        "fontWeight": 500,
+        "fontStyle": "italic",
+        "color": "#9b948a",
+        "opacity": 0.85
+      },
+      "encoding": {
+        "x": {"field": "qx", "type": "quantitative", "scale": {"type": "log"}},
+        "y": {"field": "qy", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"},
+        "align": {"field": "anchor", "type": "nominal", "scale": {"domain": ["start","end"], "range": ["left","right"]}}
       }
     }
   ]

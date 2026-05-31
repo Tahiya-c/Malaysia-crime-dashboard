@@ -1,66 +1,133 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Top 15 districts by total crime. Lollipop chart. Color encodes total volume (cividis) for consistency.",
   "background": "transparent",
   "config": {
-    "view": {"stroke": null}, "font": "Inter",
+    "view": {"stroke": null},
+    "font": "Inter",
     "axis": {
-      "labelFont": "Inter", "titleFont": "Inter",
-      "labelColor": "#52525b", "titleColor": "#71717a",
-      "domainColor": "#d4d4d8", "tickColor": "#d4d4d8",
-      "gridColor": "rgba(0,0,0,0.05)"
-    },
-    "legend": {"labelFont": "Inter", "titleFont": "Inter"}
+      "labelFont": "Inter",
+      "titleFont": "Inter",
+      "domainColor": "#d4d4d8",
+      "tickColor": "#d4d4d8",
+      "gridColor": "rgba(0,0,0,0.06)",
+      "gridDash": [2, 3]
+    }
   },
-  "title": {
-    "text": "Top 15 districts by total crime",
-    "subtitle": "Most are clustered in Selangor and Johor. 2016 to 2023 totals.",
-    "fontSize": 14, "fontWeight": 600,
-    "subtitleFontSize": 10, "subtitleColor": "#71717a",
-    "anchor": "start", "offset": 8
-  },
-  "width": 480, "height": 420,
+ 
   "data": {"url": "data/district_totals.csv"},
   "transform": [
-    {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "total_crimes", "order": "descending"}]},
+    {
+      "calculate": "toNumber(datum.total_crimes)",
+      "as": "total_crimes_n"
+    },
+    {
+      "calculate": "toNumber(datum.total_property)",
+      "as": "total_property_n"
+    },
+    {
+      "calculate": "toNumber(datum.total_assault)",
+      "as": "total_assault_n"
+    },
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "total_crimes_n", "order": "descending"}]
+    },
     {"filter": "datum.rank <= 15"},
-    {"calculate": "datum.district + '  ·  ' + datum.state", "as": "label"}
+    {
+      "calculate": "datum.district + ', ' + datum.state",
+      "as": "label"
+    },
+    {
+      "calculate": "datum.total_crimes_n >= 10000 ? format(datum.total_crimes_n / 1000, '.0f') + 'k' : format(datum.total_crimes_n, ',.0f')",
+      "as": "label_value"
+    }
   ],
+  "width": 320,
+  "height": 500,
+  "padding": {"left": 8, "right": 48, "top": 8, "bottom": 8},
   "layer": [
     {
-      "mark": {"type": "rule", "color": "#d4d4d8", "strokeWidth": 1.5},
+      "mark": {"type": "rule", "strokeWidth": 2, "opacity": 0.55},
       "encoding": {
-        "y": {"field": "label", "type": "nominal",
-              "sort": {"field": "total_crimes", "order": "descending"},
-              "axis": {"title": null, "labelFontSize": 10, "labelLimit": 200, "ticks": false, "domain": false}},
-        "x": {"field": "total_crimes", "type": "quantitative",
-              "axis": {"title": "Total crimes", "format": "~s", "tickCount": 5}},
-        "x2": {"datum": 0}
+        "y": {
+          "field": "label",
+          "type": "nominal",
+          "sort": {"field": "total_crimes_n", "order": "descending"},
+          "axis": {
+            "title": null,
+            "labelFontSize": 9.5,
+            "labelLimit": 160,
+            "labelPadding": 4,
+            "ticks": false,
+            "domain": false
+          }
+        },
+        "x": {
+          "field": "total_crimes_n",
+          "type": "quantitative",
+          "scale": {"domainMin": 0, "nice": true},
+          "axis": {
+            "title": "Total crimes (cumulative)",
+            "titleFontSize": 9.5,
+            "titlePadding": 8,
+            "format": "~s",
+            "tickCount": 4,
+            "labelFontSize": 9,
+            "labelAngle": 0
+          }
+        },
+        "x2": {"datum": 0},
+        "color": {"value": "#10b981"}
       }
     },
     {
-      "mark": {"type": "point", "filled": true, "size": 140, "stroke": "white", "strokeWidth": 1.5},
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 90,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
       "encoding": {
-        "y": {"field": "label", "type": "nominal", "sort": {"field": "total_crimes", "order": "descending"}},
-        "x": {"field": "total_crimes", "type": "quantitative"},
-        "color": {"field": "total_crimes", "type": "quantitative",
-                  "scale": {"scheme": "cividis", "reverse": true},
-                  "legend": null},
+        "y": {
+          "field": "label",
+          "type": "nominal",
+          "sort": {"field": "total_crimes_n", "order": "descending"}
+        },
+        "x": {
+          "field": "total_crimes_n",
+          "type": "quantitative"
+        },
+        "color": {"value": "#10b981"},
         "tooltip": [
           {"field": "district", "type": "nominal", "title": "District"},
           {"field": "state", "type": "nominal", "title": "State"},
-          {"field": "total_crimes", "type": "quantitative", "title": "Total", "format": ","},
-          {"field": "total_property", "type": "quantitative", "title": "Property", "format": ","},
-          {"field": "total_assault", "type": "quantitative", "title": "Assault", "format": ","}
+          {"field": "total_crimes_n", "type": "quantitative", "title": "Total crimes", "format": ","},
+          {"field": "total_property_n", "type": "quantitative", "title": "Property crimes", "format": ","},
+          {"field": "total_assault_n", "type": "quantitative", "title": "Assault crimes", "format": ","}
         ]
       }
     },
     {
-      "mark": {"type": "text", "align": "left", "dx": 12, "fontSize": 10, "color": "#71717a", "fontWeight": 500},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 7,
+        "fontSize": 9,
+        "fontWeight": 600,
+        "baseline": "middle"
+      },
       "encoding": {
-        "y": {"field": "label", "type": "nominal", "sort": {"field": "total_crimes", "order": "descending"}},
-        "x": {"field": "total_crimes", "type": "quantitative"},
-        "text": {"field": "total_crimes", "type": "quantitative", "format": ",.0f"}
+        "y": {
+          "field": "label",
+          "type": "nominal",
+          "sort": {"field": "total_crimes_n", "order": "descending"}
+        },
+        "x": {
+          "field": "total_crimes_n",
+          "type": "quantitative"
+        },
+        "text": {"field": "label_value", "type": "nominal"}
       }
     }
   ]

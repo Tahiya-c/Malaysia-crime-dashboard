@@ -1,0 +1,156 @@
+state,district,total_crimes,total_assault,total_property,assault_pct
+Johor,Batu Pahat,4302,853,3449,19.8
+Johor,Iskandar Puteri,4850,881,3969,18.2
+Johor,Johor Bahru,25617,6071,19546,23.7
+Johor,Kluang,3973,854,3119,21.5
+Johor,Kota Tinggi,3283,525,2758,16.0
+Johor,Kulaijaya,4227,1019,3208,24.1
+Johor,Ledang,1414,243,1171,17.2
+Johor,Mersing,948,231,717,24.4
+Johor,Muar,2290,488,1802,21.3
+Johor,Nusajaya,986,194,792,19.7
+Johor,Pontian,1796,340,1456,18.9
+Johor,Segamat,2270,418,1852,18.4
+Johor,Seri Alam,10007,1594,8413,15.9
+Kedah,Baling,2410,377,2033,15.6
+Kedah,Bandar Baharu,429,95,334,22.1
+Kedah,Kota Setar,10476,1570,8906,15.0
+Kedah,Kuala Muda,12952,2203,10749,17.0
+Kedah,Kubang Pasu,4185,676,3509,16.2
+Kedah,Kulim,6026,1184,4842,19.6
+Kedah,Langkawi,2735,416,2319,15.2
+Kedah,Padang Terap,825,198,627,24.0
+Kedah,Pendang,1724,286,1438,16.6
+Kedah,Sik,487,72,415,14.8
+Kedah,Yan,936,105,831,11.2
+Kelantan,Bachok,1954,407,1547,20.8
+Kelantan,Gua Musang,1181,249,932,21.1
+Kelantan,Jeli,355,58,297,16.3
+Kelantan,Kota Bharu,10379,1133,9246,10.9
+Kelantan,Kuala Krai,1172,236,936,20.1
+Kelantan,Machang,1529,188,1341,12.3
+Kelantan,Pasir Mas,2498,469,2029,18.8
+Kelantan,Pasir Puteh,2434,452,1982,18.6
+Kelantan,Tanah Merah,1670,323,1347,19.3
+Kelantan,Tumpat,2176,377,1799,17.3
+Kuala Lumpur,Brickfields,12695,2950,9745,23.2
+Kuala Lumpur,Cheras,11679,2392,9287,20.5
+Kuala Lumpur,Dang Wangi,19980,6604,13376,33.1
+Kuala Lumpur,Sentul,16456,3487,12969,21.2
+Kuala Lumpur,W.P. Putrajaya,1926,677,1249,35.2
+Kuala Lumpur,Wangsa Maju,14965,3111,11854,20.8
+Melaka,Alor Gajah,2545,563,1982,22.1
+Melaka,Jasin,1670,361,1309,21.6
+Melaka,Melaka Tengah,13765,3404,10361,24.7
+Negeri Sembilan,Jelebu,511,118,393,23.1
+Negeri Sembilan,Jempol,1742,441,1301,25.3
+Negeri Sembilan,Kuala Pilah,1394,240,1154,17.2
+Negeri Sembilan,Nilai,6165,1527,4638,24.8
+Negeri Sembilan,Port Dickson,2441,564,1877,23.1
+Negeri Sembilan,Rembau,848,157,691,18.5
+Negeri Sembilan,Seremban,8995,2056,6939,22.9
+Negeri Sembilan,Tampin,1296,230,1066,17.7
+Pahang,Bentong,2713,417,2296,15.4
+Pahang,Bera,1055,238,817,22.6
+Pahang,Cameron Highlands,434,123,311,28.3
+Pahang,Jerantut,1264,240,1024,19.0
+Pahang,Kuala Lipis,799,123,676,15.4
+Pahang,Kuantan,9074,1598,7476,17.6
+Pahang,Maran,1577,228,1349,14.5
+Pahang,Pekan,1226,197,1029,16.1
+Pahang,Raub,809,174,635,21.5
+Pahang,Rompin,1364,291,1073,21.3
+Pahang,Temerloh,2070,467,1603,22.6
+Penang,Barat Daya,3517,616,2901,17.5
+Penang,Seberang Perai Selatan,3139,855,2284,27.2
+Penang,Seberang Perai Tengah,12179,2373,9806,19.5
+Penang,Seberang Perai Utara,7016,1167,5849,16.6
+Penang,Timur Laut,10802,2591,8211,24.0
+Perak,Batu Gajah,755,154,601,20.4
+Perak,Gerik,566,119,447,21.0
+Perak,Hilir Perak,3878,856,3022,22.1
+Perak,Ipoh,13088,3004,10084,23.0
+Perak,Kampar,1157,217,940,18.8
+Perak,Kerian,1540,351,1189,22.8
+Perak,Kuala Kangsar,924,208,716,22.5
+Perak,Manjung,3605,695,2910,19.3
+Perak,Pengkalan Hulu,115,15,100,13.0
+Perak,Perak Tengah,1003,160,843,16.0
+Perak,Selama,277,73,204,26.4
+Perak,Sungai Siput,802,218,584,27.2
+Perak,Taiping,4466,1138,3328,25.5
+Perak,Tanjong Malim,918,181,737,19.7
+Perak,Tapah,1258,312,946,24.8
+Perlis,Arau,951,231,720,24.3
+Perlis,Kangar,2431,430,2001,17.7
+Perlis,Padang Besar,637,145,492,22.8
+Sabah,Beaufort,887,108,779,12.2
+Sabah,Beluran,531,143,388,26.9
+Sabah,Keningau,1285,271,1014,21.1
+Sabah,Kota Belud,965,149,816,15.4
+Sabah,Kota Kinabalu,9794,873,8921,8.9
+Sabah,Kota Kinabatangan,563,116,447,20.6
+Sabah,Kota Marudu,689,109,580,15.8
+Sabah,Kudat,370,82,288,22.2
+Sabah,Kunak,474,58,416,12.2
+Sabah,Lahad Datu,1916,306,1610,16.0
+Sabah,Papar,1609,234,1375,14.5
+Sabah,Penampang,3267,403,2864,12.3
+Sabah,Ranau,602,102,500,16.9
+Sabah,Sandakan,4478,449,4029,10.0
+Sabah,Semporna,2254,269,1985,11.9
+Sabah,Sipitang,569,52,517,9.1
+Sabah,Tawau,6115,484,5631,7.9
+Sabah,Tenom,341,77,264,22.6
+Sabah,Tuaran,732,118,614,16.1
+Sabah,W.P. Labuan,1503,171,1332,11.4
+Sarawak,Bau,480,159,321,33.1
+Sarawak,Belaga,327,57,270,17.4
+Sarawak,Betong,589,83,506,14.1
+Sarawak,Bintulu,3639,373,3266,10.3
+Sarawak,Dalat,154,36,118,23.4
+Sarawak,Julau,87,29,58,33.3
+Sarawak,Kanowit,127,30,97,23.6
+Sarawak,Kapit,355,65,290,18.3
+Sarawak,Kota Samarahan,2718,350,2368,12.9
+Sarawak,Kuching,9752,1254,8498,12.9
+Sarawak,Lawas,321,72,249,22.4
+Sarawak,Limbang,390,112,278,28.7
+Sarawak,Lubok Antu,187,45,142,24.1
+Sarawak,Lundu,471,74,397,15.7
+Sarawak,Marudi,610,210,400,34.4
+Sarawak,Matu Daro,218,37,181,17.0
+Sarawak,Meradong,344,87,257,25.3
+Sarawak,Miri,6190,917,5273,14.8
+Sarawak,Mukah,562,80,482,14.2
+Sarawak,Padawan,6397,695,5702,10.9
+Sarawak,Saratok,308,46,262,14.9
+Sarawak,Sarikei,1073,114,959,10.6
+Sarawak,Serian,967,170,797,17.6
+Sarawak,Sibu,5466,709,4757,13.0
+Sarawak,Simunjan,335,52,283,15.5
+Sarawak,Song,71,27,44,38.0
+Sarawak,Sri Aman,832,123,709,14.8
+Sarawak,Tatau,166,32,134,19.3
+Selangor,Ampang Jaya,15693,3499,12194,22.3
+Selangor,Gombak,19058,4472,14586,23.5
+Selangor,Hulu Selangor,3735,848,2887,22.7
+Selangor,Kajang,19250,4399,14851,22.9
+Selangor,Klang,22340,6055,16285,27.1
+Selangor,Kuala Langat,4384,1141,3243,26.0
+Selangor,Kuala Selangor,3664,771,2893,21.0
+Selangor,Petaling Jaya,23078,5517,17561,23.9
+Selangor,Sabak Bernam,2253,400,1853,17.8
+Selangor,Sepang,5796,1279,4517,22.1
+Selangor,Serdang,12703,2538,10165,20.0
+Selangor,Sg. Buloh,5546,1144,4402,20.6
+Selangor,Shah Alam,9319,1456,7863,15.6
+Selangor,Subang Jaya,9399,1960,7439,20.9
+Selangor,Sungai Buloh,1926,379,1547,19.7
+Terengganu,Besut,2933,489,2444,16.7
+Terengganu,Dungun,2064,293,1771,14.2
+Terengganu,Hulu Terengganu,935,166,769,17.8
+Terengganu,Kemaman,2611,367,2244,14.1
+Terengganu,Kuala Terengganu,4624,669,3955,14.5
+Terengganu,Marang,1176,223,953,19.0
+Terengganu,Setiu,641,110,531,17.2
