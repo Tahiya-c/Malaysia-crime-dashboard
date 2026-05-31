@@ -397,8 +397,8 @@ section > .grid-lg-sm:last-of-type { margin-bottom: 0; }
 .chart-wrap { width:100%; overflow:hidden; display:flex; justify-content:center; }
 
 /* min heights */
-#chart1  .chart-wrap { min-height: 540px; }
-#chart2  .chart-wrap { min-height: 540px; }
+#chart1  .chart-wrap { min-height: 600px; }
+#chart2  .chart-wrap { min-height: 600px; }
 #chart3  .chart-wrap { min-height: 360px; }
 #chart4  .chart-wrap { min-height: 360px; }
 #chart5  .chart-wrap { min-height: 400px; }
@@ -608,13 +608,19 @@ form.vega-bindings select {
 
     <div class="card reveal" id="chart1">
       <div class="card-title">State intensity over time</div>
-      <div class="card-sub">Choropleth map + ranked bar. Drag the year slider. Toggle between total crimes and rate per 100,000 population.</div>
+      <div class="card-sub">Crimes per 100,000 population — controlling for state size. Drag the year slider to explore 2016–2023. <strong>Perlis and Selangor</strong> consistently show the highest rates.</div>
       <div class="chart-wrap"></div>
     </div>
 
     <div class="card reveal" id="chart2">
       <div class="card-title">District hotspots</div>
-      <div class="card-sub">Each circle = one police district at its real coordinates. Toggle between all crimes, property, or assault.</div>
+      <div class="card-sub">
+          Each bubble = one police district at its real location.<br>
+          <strong>Larger and darker red</strong> = more crimes reported, 2016–2023.<br>
+          The west-coast corridor concentrates most of Malaysia's crime.<br>
+          <strong>Petaling Jaya, Klang and Johor Bahru</strong> are the biggest hotspots.<br>
+          Toggle between all crimes, property only, or assault only.
+        </div>
       <div class="chart-wrap"></div>
     </div>
   </section>
@@ -849,6 +855,21 @@ async function embedAll() {
     }
   }
   updateDonutCentreText();
+  updateChart2Labels();
+}
+
+function updateChart2Labels() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const colour = dark ? '#60a5fa' : '#1a1714';
+  const chart2 = document.querySelector('#chart2 .chart-wrap svg');
+  if (!chart2) return;
+  chart2.querySelectorAll('text').forEach(el => {
+    const t = el.textContent.trim();
+    if (t && t.length > 1 && !el.closest('.role-legend') && !el.closest('.role-title')) {
+      el.style.fill = colour;
+      el.style.fontWeight = '600';
+    }
+  });
 }
 
 function updateDonutCentreText() {
@@ -880,7 +901,10 @@ function applyTheme(dark, reEmbed) {
   if (lbl) lbl.textContent = dark ? 'Dark' : 'Light';
   localStorage.setItem('theme', dark ? 'dark' : 'light');
   if (reEmbed) embedAll();
-  else updateDonutCentreText();
+  else {
+    updateDonutCentreText();
+    updateChart2Labels();
+  }
 }
 
 // Apply saved theme on load (no re-embed yet — embedAll runs at bottom)

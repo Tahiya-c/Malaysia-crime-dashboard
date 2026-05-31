@@ -1,159 +1,254 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Zoomed-in district proportional symbol map of Malaysia with a streamlined heat color scale.",
+  "description": "District proportional symbol map. Larger map, smaller transparent bubbles, dark labels, no borders on text.",
   "background": "transparent",
   "config": {
-    "view": {"stroke": null},
-    "font": "Inter, system-ui, sans-serif",
-    "title": {"font": "Inter", "subtitleFont": "Inter", "anchor": "start", "offset": 12},
+    "view": {
+      "stroke": null
+    },
+    "font": "Inter",
+    "title": {
+      "font": "Inter",
+      "subtitleFont": "Inter",
+      "anchor": "start",
+      "offset": 10
+    },
     "legend": {
-      "labelFont": "Inter", 
-      "titleFont": "Inter", 
-      "titleFontSize": 11, 
-      "labelFontSize": 10,
-      "layout": {"direction": "horizontal"}
+      "labelFont": "Inter",
+      "titleFont": "Inter",
+      "titleFontSize": 10,
+      "labelFontSize": 9
     }
   },
   "title": {
-    "text": "Relative Crime Hotspots Across Malaysian Districts",
-    "subtitle": "Each circle represents a police district. Size and color scale with relative case volume (2016–2023).",
-    "fontSize": 18,
+    "text": "Where crime concentrates: district-level hotspots",
+    "subtitle": "Each circle = one police district. Larger and darker = more crimes reported 2016\u20132023.",
+    "fontSize": 15,
     "fontWeight": 600,
-    "subtitleFontSize": 12,
-    "subtitleColor": "#52525b"
+    "subtitleFontSize": 11,
+    "subtitleColor": "#71717a"
   },
-  "width": 900,
-  "height": 450,
+  "width": 1050,
+  "height": 520,
   "params": [
     {
       "name": "metric",
       "value": "All crimes",
       "bind": {
         "input": "radio",
-        "options": ["All crimes", "Property only", "Assault only"],
-        "name": "Filter Crime Type: "
+        "options": [
+          "All crimes",
+          "Property only",
+          "Assault only"
+        ],
+        "name": "Show:  "
       }
     }
   ],
   "layer": [
     {
-      "comment": "Base Map Layer - Zoomed and centered directly on Malaysia coordinates",
       "data": {
         "url": "data/geoBoundaries-MYS-ADM1.topojson",
-        "format": {"type": "topojson", "feature": "MYSADM1gbOpen"}
+        "format": {
+          "type": "topojson",
+          "feature": "MYSADM1gbOpen"
+        }
       },
       "projection": {
         "type": "mercator",
-        "scale": 2600,
-        "center": [109.5, 4.2]
+        "scale": 2800,
+        "center": [
+          109.5,
+          4.0
+        ]
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#f1f5f9",
-        "stroke": "#cbd5e1",
-        "strokeWidth": 0.8
+        "fill": "#e8e4dd",
+        "stroke": "#b8b2aa",
+        "strokeWidth": 0.5
       }
     },
     {
-      "comment": "Proportional Bubble Layer",
-      "data": {"url": "data/district_totals.csv"},
+      "data": {
+        "url": "data/district_totals.csv"
+      },
       "transform": [
         {
           "calculate": "metric === 'Property only' ? datum.total_property : metric === 'Assault only' ? datum.total_assault : datum.total_crimes",
-          "as": "raw_value"
+          "as": "value"
         },
-        {"filter": "datum.raw_value > 0"},
         {
-          "calculate": "sqrt(datum.raw_value)",
-          "as": "relative_intensity"
+          "filter": "datum.value > 0"
+        },
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "vol_rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "value",
+              "order": "descending"
+            }
+          ]
         }
       ],
       "projection": {
         "type": "mercator",
-        "scale": 2600,
-        "center": [109.5, 4.2]
+        "scale": 2800,
+        "center": [
+          109.5,
+          4.0
+        ]
       },
       "mark": {
         "type": "circle",
-        "stroke": "#ffffff",
-        "strokeWidth": 1.2,
-        "opacity": 0.5,
-        "cursor": "pointer"
+        "stroke": null,
+        "opacity": 0.38
       },
       "encoding": {
-        "longitude": {"field": "lon", "type": "quantitative"},
-        "latitude": {"field": "lat", "type": "quantitative"},
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
         "size": {
-          "field": "relative_intensity",
+          "field": "value",
           "type": "quantitative",
           "scale": {
-            "type": "linear",
-            "range": [25, 600]
+            "type": "sqrt",
+            "range": [
+              8,
+              420
+            ]
           },
           "legend": {
-            "title": "Relative Volume (Scale)",
-            "values": [10, 50, 100, 150],
-            "orient": "bottom",
-            "offset": 15,
-            "legendX": 20
+            "title": "Total cases",
+            "format": "~s",
+            "orient": "bottom-left",
+            "gradientLength": 100,
+            "offset": 10,
+            "titleFontSize": 9,
+            "labelFontSize": 9
           }
         },
         "color": {
-          "field": "raw_value",
+          "field": "value",
           "type": "quantitative",
           "scale": {
             "scheme": "reds",
             "type": "sqrt"
           },
-          "legend": {
-            "title": "Total Cases (Absolute)",
-            "format": "~s",
-            "orient": "bottom",
-            "offset": 15,
-            "gradientLength": 180
-          }
+          "legend": null
         },
-        "order": {"field": "raw_value", "type": "quantitative", "sort": "descending"},
+        "order": {
+          "field": "value",
+          "type": "quantitative",
+          "sort": "ascending"
+        },
         "tooltip": [
-          {"field": "district", "type": "nominal", "title": "District"},
-          {"field": "state", "type": "nominal", "title": "State"},
-          {"field": "total_crimes", "type": "quantitative", "title": "Total Crimes", "format": ","},
-          {"field": "total_property", "type": "quantitative", "title": "Property Crimes", "format": ","},
-          {"field": "total_assault", "type": "quantitative", "title": "Assault Cases", "format": ","}
+          {
+            "field": "district",
+            "type": "nominal",
+            "title": "District"
+          },
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "total_crimes",
+            "type": "quantitative",
+            "title": "Total crimes",
+            "format": ","
+          },
+          {
+            "field": "total_property",
+            "type": "quantitative",
+            "title": "Property",
+            "format": ","
+          },
+          {
+            "field": "total_assault",
+            "type": "quantitative",
+            "title": "Assault",
+            "format": ","
+          }
         ]
       }
     },
     {
-      "comment": "Smart Labeling for Top Districts",
-      "data": {"url": "data/district_totals.csv"},
+      "data": {
+        "url": "data/district_totals.csv"
+      },
       "transform": [
-        {"calculate": "metric === 'Property only' ? datum.total_property : metric === 'Assault only' ? datum.total_assault : datum.total_crimes", "as": "value"},
-        {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "value", "order": "descending"}]},
-        {"filter": "datum.rank <= 3"}
+        {
+          "calculate": "metric === 'Property only' ? datum.total_property : metric === 'Assault only' ? datum.total_assault : datum.total_crimes",
+          "as": "value"
+        },
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "value",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rank <= 5"
+        }
       ],
       "projection": {
         "type": "mercator",
-        "scale": 2600,
-        "center": [109.5, 4.2]
+        "scale": 2800,
+        "center": [
+          109.5,
+          4.0
+        ]
       },
       "mark": {
         "type": "text",
         "align": "left",
-        "dx": 14,
-        "dy": -2,
-        "fontSize": 11,
+        "baseline": "middle",
+        "dx": 16,
+        "dy": -8,
+        "fontSize": 10,
         "fontWeight": 600,
-        "color": "#0f172a",
-        "stroke": "#ffffff",
-        "strokeWidth": 4,
-        "strokeJoin": "round",
-        "paintOrder": "stroke"
+        "color": "blue"
       },
       "encoding": {
-        "longitude": {"field": "lon", "type": "quantitative"},
-        "latitude": {"field": "lat", "type": "quantitative"},
-        "text": {"field": "district", "type": "nominal"}
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "district",
+          "type": "nominal"
+        }
       }
     }
-  ]
+  ],
+  "padding": {
+    "left": 50,
+    "right": 10,
+    "top": 5,
+    "bottom": 10
+  }
 }
