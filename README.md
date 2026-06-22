@@ -2,7 +2,7 @@
 
 Interactive data visualisation exploring crime trends across Malaysia, built with Vega-Lite.
 
-**[View Live Dashboard →](https://tahiya-c.github.io/malaysia-crime-dashboard/)**
+**[View Live Dashboard →](https://tahiya-c.github.io/Malaysia-crime-dashboard/)**
 
 ---
 
@@ -61,4 +61,3 @@ MIT
 
 ---
 
-**Built for FIT2179 Data Visualisation · Monash University Malaysia**
